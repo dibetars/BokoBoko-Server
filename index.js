@@ -9,6 +9,12 @@ const port = process.env.PORT || 3000;
 // Basic middleware
 app.use(express.json());
 
+app.use(cors({
+  origin: '*',
+  methods: ['GET', 'POST', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
+
 // Proxy endpoint for Smoobu availability check
 app.post('/api/check-availability', async (req, res) => {
   try {
@@ -48,17 +54,6 @@ app.get('/api/room-details/:apartmentId', async (req, res) => {
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
-
-app.use(cors({
-  origin: [
-    'http://localhost:5173',
-    'https://*.vercel.app',
-    'https://bokoboko.org',
-    'https://www.bokoboko.org'
-  ],
-  methods: ['GET', 'POST', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization']
-}));
 
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
